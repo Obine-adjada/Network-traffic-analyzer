@@ -12,7 +12,6 @@ class GeoIPDetector:
     def __init__(self, geoip_db_path="data/geoip/GeoLite2-Country.mmdb"):
         """
         Initialise le détecteur GeoIP
-        
         Args:
             geoip_db_path: Chemin vers la base de données GeoIP
         """
@@ -30,17 +29,14 @@ class GeoIPDetector:
             print(f"! Base GeoIP introuvable : {geoip_db_path}")
             print(" Téléchargez-la depuis : https://github.com/P3TERX/GeoLite.mmdb")
         else:
-            # Ouvre la base de données
             self.reader = geoip2.database.Reader(geoip_db_path)
             print(f"Base GeoIP chargée : {geoip_db_path}")
     
     def get_country(self, ip_address):
         """
         Récupère le pays d'une adresse IP
-        
         Args:
-            ip_address: Adresse IP à localiser
-            
+            ip_address: Adresse IP à localiser   
         Returns:
             Nom du pays ou "Unknown" si introuvable
         """
@@ -51,8 +47,6 @@ class GeoIPDetector:
             
             if self._is_private_ip(ip_address):
                 return "Private Network"
-            
-            
             response = self.reader.country(ip_address)
             country = response.country.name
             
@@ -61,12 +55,11 @@ class GeoIPDetector:
             
             self.country_stats[country] += 1
             
-            return country
-            
+            return country  
         except geoip2.errors.AddressNotFoundError:
             return "Unknown"
         except Exception as e:
-            print(f"[!] Erreur lors de la recherche de {ip_address}: {e}")
+            print(f"Erreur lors de la recherche de {ip_address}: {e}")
             return "Unknown"
 
     def _is_private_ip(self, ip):
@@ -100,10 +93,8 @@ class GeoIPDetector:
     def is_high_risk_country(self, country):
         """
         Vérifie si un pays est à haut risque
-        
         Args:
-            country: Nom du pays
-            
+            country: Nom du pays   
         Returns:
             True si à haut risque, False sinon
         """
@@ -112,10 +103,8 @@ class GeoIPDetector:
     def analyze_connections(self, ip_list):
         """
         Analyse une liste d'IPs et retourne les statistiques
-        
         Args:
-            ip_list: Liste d'adresses IP
-            
+            ip_list: Liste d'adresses IP    
         Returns:
             Dictionnaire avec les stats par pays et alertes
         """
@@ -163,7 +152,7 @@ class GeoIPDetector:
         if self.reader:
             self.reader.close()
 
-# Test du module
+# Test
 if __name__ == "__main__":
     detector = GeoIPDetector()
     
